@@ -31,9 +31,8 @@ Our analysis is data-driven and employs a variety of data processing and visuali
 - Data: This directory contains the raw and processed data collected from the social media platforms.
 - Notebooks: Jupyter notebooks detailing the data cleaning, analysis, and visualization processes.
 - Reports: Final reports and insights drawn from the analysis.
-- Recommendations: Actionable recommendations for improving the company's social media strategy.
 - Images: Visualizations and plots generated during the analysis.
-- Code: Custom scripts, functions, or utilities used in data processing and analysis.
+
 
 
 **How to Use This Repository**
