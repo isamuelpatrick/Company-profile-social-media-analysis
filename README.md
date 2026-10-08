@@ -1,41 +1,68 @@
-**Company profile social media analysis**
+# Stanbic IBTC social media: what actually drives engagement?
 
-Welcome to my Company profile social media analysis project. In this project, I dive deep into the world of social media by analyzing data from major platforms including Facebook, Twitter, Instagram, and LinkedIn for a company profile. My focus is on understanding the company’s social media presence, engagement and how it evolves over time.
-Social media platforms have become indispensable tools for businesses to connect with their audiences, build brand presence, and engage with their communities. The data I have collected from these platforms provides valuable insights into the impact of a company's social media efforts.
+An analysis of 29,186 posts with performance data from Stanbic IBTC Nigeria's Facebook, Instagram, LinkedIn and Twitter accounts, January 2017 to July 2023. The data was provided by Play House Communication for a hackathon.
 
-**Project Goals**
+This is version 2 of the project. Version 1 reached conclusions from summed totals and repaired data errors by guessing. This version rebuilds the analysis so that every comparison is per post, every exclusion is logged, and every claim carries a confidence interval or an effect size. [CHANGES.md](CHANGES.md) lists what changed and why.
 
-My primary goals for this project include:
-- Analyzing the performance metrics of a company's social media profiles.
-- Identifying key trends and patterns in engagement and interactions.
-- Evaluating the effectiveness of different types of content and posts.
-- Gaining insights into the growth of the company's online community.
-- Providing actionable recommendations for optimizing social media strategies.
+## Key findings
 
-**Data Sources**
+**1. Volume is not performance.** Photos collected most engagements in total because they were 76% to 84% of everything posted. Per post, the best format depends on the platform. Facebook videos earn a typical engagement rate of 4.5% against 2.4% for photos, although they reach far fewer people. On LinkedIn the order reverses, and on Instagram format matters little.
 
-I have collected data from the following social media platforms:
-- Facebook: A comprehensive dataset covering posts, engagements, reach, and impressions.
-- Twitter: Data on tweets, retweets, likes, and replies.
-- Instagram: Metrics on posts, comments, likes, and views.
-- LinkedIn: Insights into reach and engagements.
-  
+![Content type](figures/01_content_type_per_post.png)
 
-**Methodology**
+**2. The 2020 "surge" was mostly more posting.** Posting volume rose 46% to 65% in 2020 on every platform. Per post, 2020 was better on three platforms and worse on Instagram, where engagement has declined steadily since 2017. The data cannot attribute 2020 to COVID-19. Reach per post has fallen by about half or more since its 2019 or 2020 peak on every platform, even as the team posted more.
 
-Our analysis is data-driven and employs a variety of data processing and visualization techniques to extract meaningful insights. We will explore trends over time, compare performance across platforms, and derive actionable recommendations based on our findings.
+![Trends](figures/02_trends_volume_vs_rate.png)
 
+**3. There is no magic posting hour.** 10am was the busiest hour, and 10am posts perform like a typical post. Early-morning posts (7am to 8am) do somewhat better on three platforms, but few posts went out then. That makes it worth testing, not a rule.
 
-**Repository Structure**
+![Posting hour](figures/03_posting_hour.png)
 
-- Data: This directory contains the raw and processed data collected from the social media platforms.
-- Notebooks: Jupyter notebooks detailing the data cleaning, analysis, and visualization processes.
-- Reports: Final reports and insights drawn from the analysis.
-- Images: Visualizations and plots generated during the analysis.
+**4. Hashtags do not lift engagement and links reduce it.** With content type, year, time, length and tone held constant, hashtags are neutral or associated with lower engagement (11% lower on Facebook, 18% on LinkedIn). Outbound links are associated with 16% to 27% lower engagement on Facebook, Instagram and LinkedIn. Questions help on Facebook and Twitter. Long posts help on LinkedIn.
 
+![Feature effects](figures/05_feature_rate_ratios.png)
 
+**5. Post wording is a weak lever.** Tested on posts from 2022 to 2023 that the models never saw, post features explain about 10% of the variation in engagement rate on Facebook and essentially none elsewhere. Where there is signal, it comes from video versus photo, not character count.
 
-**How to Use This Repository**
+## What this means for a content team
 
-Feel free to explore the contents of this repository to gain insights into the analysis. If you are interested in the details of the analysis, check out the Jupyter notebooks in the 'Notebooks' directory. For a quick overview of my findings and recommendations, head over to the 'Reports' and 'Recommendations' sections.
-I hope that the insights shared in this project provide valuable guidance to businesses aiming to make the most out of their social media presence.
+* Judge formats per post and per platform, not by totals or with one rule for all platforms.
+* Treat campaign hashtags as campaign tracking, not as an engagement tactic.
+* Test moving links out of the post body (for example, into the first comment) on Facebook, Instagram and LinkedIn.
+* Test early-morning scheduling before changing the posting calendar.
+* Before posting more, test whether volume is diluting reach per post.
+
+## Method in brief
+
+| Step | Approach |
+|---|---|
+| Cleaning | Six logged exclusion rules (`src/clean.py`). Missing metrics stay missing. Impossible values (negative engagements, engagements above impressions) are excluded, not repaired. 3,978 Facebook dates in a second format are recovered. |
+| Unit of analysis | The post. Engagement rate is recomputed as engagements divided by impressions. |
+| Comparisons | Medians with 95% bootstrap intervals. Kruskal-Wallis with epsilon squared for group differences. Spearman correlation. |
+| Drift control | A year-adjusted index (a post's rate divided by its platform's median that year) for hour and hashtag comparisons. |
+| Controlled effects | One Poisson regression per platform with log(impressions) as offset and robust standard errors. Coefficients are engagement-rate ratios. |
+| Tone | VADER sentiment on the bank's own posts, spot-checked for face validity. |
+| Prediction | Random forest trained on 2017 to 2021, tested on 2022 to 2023, with permutation importance on the test set and a median baseline. |
+
+## Limitations
+
+* Observational data: results are associations, not causes.
+* Paid promotion is not identified for most posts, and boosted posts would distort per-post comparisons.
+* Timestamps are used as exported; the time zone is assumed to be West Africa Time.
+* The Instagram export is exactly 10,000 rows and may be capped. Twitter 2021 looks incomplete.
+* On Twitter every media post carries a platform link, so "has a link" cannot be separated from "has media" there.
+* Tone is scored with a general lexicon and has not been validated against human coding.
+
+## Repository
+
+```
+data/raw/            original exports, one file per platform
+data/clean/          posts_clean.csv and cleaning_log.csv (generated)
+src/clean.py         cleaning rules and feature engineering
+src/stats.py         statistical helpers
+src/style.py         chart style
+notebooks/analysis.ipynb   the full analysis, executed, with commentary
+figures/             charts used in this README
+```
+
+To reproduce: `pip install -r requirements.txt`, then run `notebooks/analysis.ipynb` from the `notebooks` folder. It rebuilds the clean data from the raw files.

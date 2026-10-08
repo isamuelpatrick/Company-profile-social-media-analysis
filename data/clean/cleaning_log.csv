@@ -1,0 +1,29 @@
+network,step,rows,removed
+Facebook,Raw export,9803,
+Facebook,Unreadable date,9803,0.0
+Facebook,No metrics recorded (impressions missing),8893,910.0
+Facebook,Zero impressions (post never delivered),7713,1180.0
+Facebook,Negative or missing engagements (export error),7713,0.0
+Facebook,"Engagements exceed impressions (impossible, export error)",7690,23.0
+Facebook,Content type with <5 posts,7690,0.0
+Twitter,Raw export,8529,
+Twitter,Unreadable date,8529,0.0
+Twitter,No metrics recorded (impressions missing),7842,687.0
+Twitter,Zero impressions (post never delivered),7841,1.0
+Twitter,Negative or missing engagements (export error),7841,0.0
+Twitter,"Engagements exceed impressions (impossible, export error)",7840,1.0
+Twitter,Content type with <5 posts,7840,0.0
+Instagram,Raw export,10000,
+Instagram,Unreadable date,10000,0.0
+Instagram,No metrics recorded (impressions missing),8516,1484.0
+Instagram,Zero impressions (post never delivered),8227,289.0
+Instagram,Negative or missing engagements (export error),8227,0.0
+Instagram,"Engagements exceed impressions (impossible, export error)",8129,98.0
+Instagram,Content type with <5 posts,8129,0.0
+LinkedIn,Raw export,7760,
+LinkedIn,Unreadable date,7760,0.0
+LinkedIn,No metrics recorded (impressions missing),6332,1428.0
+LinkedIn,Zero impressions (post never delivered),6332,0.0
+LinkedIn,Negative or missing engagements (export error),6330,2.0
+LinkedIn,"Engagements exceed impressions (impossible, export error)",6264,66.0
+LinkedIn,Content type with <5 posts,6261,3.0
